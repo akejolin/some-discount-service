@@ -13,12 +13,25 @@ const app = new koa()
 
 const middlewares = require('./middlewares')
 const routes = require('./routes')
+const log = require('./utils/system.log')
 
 if (!isEmpty(middlewares)) {
   middlewares.forEach((middleware) => {
     app.use(middleware)
   })
 }
+
+const db = require("./models")
+const initial = require("./config/initial-db")
+
+db.sequelize.sync({force: true}).then(() => {
+  log.info('Drop and Resync Db');
+  if (!isEmpty(initial)) {
+    initial.forEach((init) => {
+      init()
+    })
+  }
+})
 
 if (!isEmpty(routes)) {
   routes.forEach((route) => {
@@ -27,7 +40,7 @@ if (!isEmpty(routes)) {
 }
 
 const server = app.listen(port, () => {
-  console.info(`Listening on port ${port}`)
+  log.info(`Listening on port ${port}`)
 })
 
 module.exports = server
