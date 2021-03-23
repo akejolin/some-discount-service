@@ -4,7 +4,7 @@
 jest.mock('node-fetch', () => require('fetch-mock-jest').sandbox())
 const fetchMock = require('node-fetch')
 
-const fetchComponent = require('../lib/fetch')
+const fetchComponent = require('../fetch')
 
 describe('fetch client', () => {
   beforeEach(() => {

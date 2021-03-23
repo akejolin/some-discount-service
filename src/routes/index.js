@@ -3,10 +3,10 @@
 * @return array
 */
 
-const feed = require('./feed')
-const episode = require('./episode')
+const generateCodes = require('./generate-codes')
+const getCode = require('./get-code')
 
 module.exports = [
-  feed,
-  episode,
+  generateCodes,
+  getCode,
 ]

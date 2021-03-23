@@ -2,8 +2,8 @@
 * @desc Will generate X amount of codes
 */
 
-const isEmpty = require('lodash.isempty')
-const get = require('lodash.get')
+//const isEmpty = require('lodash.isempty')
+//const get = require('lodash.get')
 
 module.exports = async (ctx) => {
   /*

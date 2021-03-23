@@ -21,7 +21,7 @@ describe('server', () => {
 
   it('should respond 200 on /generate-codes request', (status) => {
     request(server)
-      .get('/feed?url=https://www.reddit.com/.rss')
+      .get('/generate-codes')
       .expect(200, status)
   })
 })
