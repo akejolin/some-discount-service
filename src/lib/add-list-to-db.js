@@ -6,7 +6,7 @@
 * @return void
 */
 
-const path = require('path')
+
 const readDB = require('./read-db')
 const writeDB = require('./write-db')
 const findLatestId = require('../utils/find-latest-id')

@@ -6,7 +6,7 @@
 
 const fs = require('fs')
 
-module.exports = async (file) => new Promise((resolve, reject) => fs.readFile(file, 'utf8', (err, data) => {
+module.exports = async (file) => new Promise((resolve) => fs.readFile(file, 'utf8', (err, data) => {
   if (err) {
     throw new Error(err)
   }

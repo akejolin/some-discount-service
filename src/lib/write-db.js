@@ -10,7 +10,7 @@
 const path = require('path')
 const fs = require('fs')
 
-module.exports = (dirName, fileName, data) => new Promise(async (resolve, reject) => {
+module.exports = (dirName, fileName, data) => new Promise(async (resolve) => {
   const diskPath = path.resolve('.', dirName)
   const filePath = `${diskPath}/${fileName}`
 

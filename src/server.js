@@ -18,8 +18,6 @@ const respondToClient = require('./utils/respond-to-client')
 const createDB = require('./lib/create-db')
 const models = require('./models')
 
-const get = require('lodash.get')
-
 app.context.respondToClient = respondToClient
 
 if (!isEmpty(middlewares)) {
@@ -29,12 +27,11 @@ if (!isEmpty(middlewares)) {
 }
 
 if (!isEmpty(models)) {
-  models.forEach((item, i) => {
+  models.forEach((item) => {
     const initData = item.initData ? [item.value] : []
     createDB('db', `${item.key}.json`, initData)
   })
 }
-
 
 if (!isEmpty(routes)) {
   routes.forEach((route) => {

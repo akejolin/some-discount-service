@@ -4,7 +4,7 @@ const path = require('path')
 
 const fileRead = require('../utils/file.read')
 
-module.exports = async (dirName, fileName) => new Promise(async (resolve, reject) => {
+module.exports = async (dirName, fileName) => new Promise(async (resolve) => {
   const diskPath = path.resolve('.', dirName)
   const filePath = `${diskPath}/${fileName}`
   try {

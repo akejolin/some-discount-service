@@ -5,7 +5,7 @@
 
 const readDB = require('../lib/read-db')
 
-module.exports = (haystack, key, needle) => new Promise(async (resolve, reject) => {
+module.exports = (haystack, key, needle) => new Promise(async (resolve) => {
 
   let db = []
   try {

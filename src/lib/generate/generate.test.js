@@ -1,7 +1,6 @@
 /**
-* @desc Test to generate checksum of a file.
+* @desc Test to generate a hash code of a string, id and random number.
 */
-const path = require('path')
 
 
 const generateCode = require('./generate')

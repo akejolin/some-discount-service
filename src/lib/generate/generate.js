@@ -6,7 +6,7 @@
 const crypto = require('crypto')
 const randomBetween = require('../../utils/random-between')
 
-module.exports = (salt) => new Promise(async (resolve, reject) => {
+module.exports = (salt) => new Promise(async (resolve) => {
 
   const random = randomBetween(0,100000)
   const generateChecksum = (str, algorithm, encoding) => crypto
