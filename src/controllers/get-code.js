@@ -3,7 +3,7 @@
 */
 
 const get = require('lodash.get')
-const getItemDB = require('../lib/get-item-db')
+const getItemDB = require('../lib/db/get-item-db')
 
 
 module.exports = async (ctx) => {
