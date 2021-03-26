@@ -5,7 +5,7 @@
 const get = require('lodash.get')
 const generateCode = require('../lib/generate/generate')
 const randowmBetween = require('../utils/random-between')
-const ReadFile = require('../utils/file.read')
+const readDB = require('../lib/read-db')
 
 
 module.exports = async (ctx) => {
@@ -27,14 +27,13 @@ module.exports = async (ctx) => {
   }
 
   // Get list of codes from DB
-
-
+  const db = await readDB('db', 'codes.json')
+  console.log(db)
   // Loop and generate new codes
 
 
   // Save codes
 
-  const codes = await Promise.all(promises).then(item => item)
-
-  return ctx.respondToClient(ctx, 200, {data: codes})
+ 
+  return ctx.respondToClient(ctx, 200, db)
 }

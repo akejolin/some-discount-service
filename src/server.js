@@ -30,7 +30,7 @@ if (!isEmpty(middlewares)) {
 
 if (!isEmpty(models)) {
   models.forEach((item, i) => {
-    createDB('db', `${item.key}.json`, item.value)
+    createDB('db', `${item.key}.json`, [item.value])
   })
 }
 
