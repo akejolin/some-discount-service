@@ -8,7 +8,7 @@ const isEmpty = require('lodash.isempty')
 const middlewares = require('./middlewares')
 const routes = require('./routes')
 const log = require('./utils/system.log')
-const createDB = require('./lib/create-db')
+const createDB = require('./lib/db/create-db')
 const models = require('./models')
 
 // Defines

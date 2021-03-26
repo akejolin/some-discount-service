@@ -6,9 +6,9 @@ const get = require('lodash.get')
 const generateCode = require('../lib/generate/generate')
 const findLatestId = require('../utils/find-latest-id')
 const DBmodel = require('../models/codes')
-const writeDB = require('../lib/write-db')
-const getItemDB = require('../lib/get-item-db')
-const getItemsDB = require('../lib/get-items-db')
+const writeDB = require('../lib/db/write-db')
+const getItemDB = require('../lib/db/get-item-db')
+const getItemsDB = require('../lib/db/get-items-db')
 
 
 module.exports = async (ctx) => {
