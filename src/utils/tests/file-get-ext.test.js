@@ -2,7 +2,7 @@
 * @desc Test get extension function of a url.
 */
 
-const getFileExt = require('../file.get-ext')
+const getFileExt = require('../file-get-ext')
 
 describe('file.get-ext', () => {
   it('should extract an extension of an string url', () => {

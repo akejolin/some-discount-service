@@ -14,6 +14,13 @@ const app = new koa()
 const middlewares = require('./middlewares')
 const routes = require('./routes')
 const log = require('./utils/system.log')
+const respondToClient = require('./utils/respond-to-client')
+const createDB = require('./lib/create-db')
+const models = require('./models')
+
+const get = require('lodash.get')
+
+app.context.respondToClient = respondToClient
 
 if (!isEmpty(middlewares)) {
   middlewares.forEach((middleware) => {
@@ -21,17 +28,12 @@ if (!isEmpty(middlewares)) {
   })
 }
 
-const db = require("./models")
-const initial = require("./config/initial-db")
+if (!isEmpty(models)) {
+  models.forEach((item, i) => {
+    createDB('db', `${item.key}.json`, item.value)
+  })
+}
 
-db.sequelize.sync({force: true}).then(() => {
-  log.info('Drop and Resync Db');
-  if (!isEmpty(initial)) {
-    initial.forEach((init) => {
-      init()
-    })
-  }
-})
 
 if (!isEmpty(routes)) {
   routes.forEach((route) => {
