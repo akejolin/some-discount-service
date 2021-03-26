@@ -2,7 +2,7 @@
 * @desc Test so log system has required functions.
 */
 
-const log = require('../system.log')
+const log = require('./system.log')
 
 describe('log', () => {
   it('should have certain log functions', () => {

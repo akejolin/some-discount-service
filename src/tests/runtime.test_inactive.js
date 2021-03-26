@@ -24,4 +24,5 @@ describe('server', () => {
       .get('/generate-codes')
       .expect(200, status)
   })
+  
 })

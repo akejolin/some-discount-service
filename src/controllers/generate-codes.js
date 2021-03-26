@@ -6,8 +6,6 @@ const get = require('lodash.get')
 const generateCode = require('../lib/generate/generate')
 const findLatestId = require('../utils/find-latest-id')
 const DBmodel = require('../models/codes')
-const readDB = require('../lib/read-db')
-const addToDB = require('../lib/add-list-to-db')
 const writeDB = require('../lib/write-db')
 const getItemDB = require('../lib/get-item-db')
 const getItemsDB = require('../lib/get-items-db')
@@ -51,7 +49,7 @@ module.exports = async (ctx) => {
     return
   }
 
-  // ** Find out how many codes should be created ** 
+  // ** Find out how many codes should be created **
 
   // Set default portion to requested amount
   let portionToCreate = Number(params.amount)

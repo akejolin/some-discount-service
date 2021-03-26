@@ -4,19 +4,19 @@
 const path = require('path')
 
 
-const generateChecksum = require('./generate')
+const generateCode = require('./generate')
 
-describe('generate.js', () => {
+describe('generate function', () => {
 
-  it('should generate a hash', async () => {
+  it('should generate a hash code', async () => {
 
-    let checksum = null
+    let hashCode = null
     try {
-      checksum = await generateChecksum()
+      hashCode = await generateCode(1)
     } catch(error) {
       throw new Error(`${error}`)
     }
 
-    expect(checksum).toEqual({checksum: "b10a8db164e0754105b7a99be72e3fe5", url: "https://some.url.com"})
+    expect(hashCode.length).toEqual(32)
   })
 })
