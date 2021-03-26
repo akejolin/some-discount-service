@@ -3,7 +3,6 @@
 * @return string - hash
 */
 
-
 const crypto = require('crypto')
 const randomBetween = require('../../utils/random-between')
 

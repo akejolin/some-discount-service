@@ -5,5 +5,6 @@ module.exports = {
   brandId: 1,
   desc: '20% off',
   rate: 0.2,
-  target: ['*']
+  target: ['*'],
+  isUsed: false,
 }
