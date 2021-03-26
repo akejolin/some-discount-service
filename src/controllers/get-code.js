@@ -1,43 +1,54 @@
 /**
-* @desc Will generate X amount of codes
+* @desc get a discount code
 */
 
-//const isEmpty = require('lodash.isempty')
-//const get = require('lodash.get')
-
+const get = require('lodash.get')
+const getItemDB = require('../lib/get-item-db')
 
 
 module.exports = async (ctx) => {
-  /*
-  const url = get(ctx, 'request.query.url')
+
+  const params = {
+    code: get(ctx, 'query.code', null),
+    userId: get(ctx, 'query.user_id', null),
+  }
 
   // Param validation
-  if (!url) {
-    ctx.status = 400
-    ctx.body={error: 'Bad request. Url param is missing.'}
-    return
+  if (params.code === null) {
+    return ctx.respondToClient(ctx, 400 , `code param is missing`)
   }
-  if (isEmpty(url)) {
-    ctx.status = 400
-    ctx.body={error: 'Bad request. Url param is empty.'}
-    return
-  }
-  const protocolRegExp = /^(http|https):\/\//i
-  if (!protocolRegExp.test(url)) {
-    ctx.status = 400
-    ctx.body={error: 'Bad request. Url param is invalid.'}
-    return
-  }
-*/
-  // Get feed and parse
-  try {
-    //let feed = await feedFetch(url)
-    //feed = feedFormat(feed)
 
-    ctx.status = 200
-    ctx.body = {response: 'Great success'}
-  } catch(error) {
-    ctx.status = error.code
-    ctx.body = {error}
+  if (params.code === '') {
+    return ctx.respondToClient(ctx, 400 , `code param was provided but with empty value`)
   }
+
+  // Param validation
+  if (params.userid === null) {
+    return ctx.respondToClient(ctx, 400 , `userid param is missing`)
+  }
+
+  if (params.userid === '') {
+    return ctx.respondToClient(ctx, 400 , `userid param was provided but with empty value`)
+  }
+
+  let discountCode = null
+  try {
+    discountCode = await getItemDB('codes.json', 'code', params.code)
+  } catch(error) {
+    console.error(error)
+  }
+
+  if (discountCode) {
+    return ctx.respondToClient(ctx, 200, {
+      response: {
+        status: 'valid',
+        code: discountCode.code,
+        discount: Number(discountCode.rate),
+        message: `Congratulation, you will get a discount of ${Math.floor(discountCode.rate*100)}% on the total price.`
+      }
+    })
+  } else {
+    return ctx.respondToClient(ctx, 400, 'Provided code is invalid')
+  }
+
 }

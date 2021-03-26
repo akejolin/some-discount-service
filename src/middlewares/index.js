@@ -5,8 +5,11 @@
 
 const bodyParser = require('koa-bodyparser')
 const healthcheck = require('./system.healthcheck')
+const respondToClient = require('./respond-to-client')
 
 module.exports = [
-  healthcheck,
-  bodyParser(),
+  () => healthcheck,
+  () => bodyParser(),
+  respondToClient,
+
 ]
