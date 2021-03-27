@@ -6,6 +6,12 @@ const router = new Router()
 
 const controller = require('../controllers/login.js')
 
+router.post('/login', async (ctx, next) => {
+  await controller(ctx)
+  await next()
+})
+
+// Todo: remove this. This is for testing purpose
 router.get('/login', async (ctx, next) => {
   await controller(ctx)
   await next()

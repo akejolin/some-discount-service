@@ -10,9 +10,10 @@ const bcrypt = require("bcryptjs")
 
 module.exports = async (ctx) => {
 
+  // Collect params
   const params = {
-    username: get(ctx, 'query.username', 'testy'), // Todo: remove defaults. For now default to hardcoded for testing
-    password: get(ctx, 'query.password', '12345'), // Todo: remove defaults. For now default to hardcoded for testing
+    username: get(ctx, 'body.username', null) !== null ? get(ctx, 'body.username', null) : get(ctx, 'query.username', null),
+    password: get(ctx, 'body.password', null) !== null ? get(ctx, 'body.username', null) : get(ctx, 'query.username', null),
   }
 
   // Param username validation

@@ -13,9 +13,10 @@ const log = require('../utils/system.log')
 
 module.exports = async (ctx) => {
 
+  // Collect params
   const params = {
-    code: get(ctx, 'query.code', null),
-    userId: get(ctx, 'query.user_id', null),
+    code: get(ctx, 'body.code', null) !== null ? get(ctx, 'query.code', null) : get(ctx, 'query.code', null),
+    userId: get(ctx, 'body.user_id', null) !== null ? get(ctx, 'body.user_id', null) : get(ctx, 'query.user_id', null),
   }
 
   // Param code validation
@@ -83,12 +84,10 @@ module.exports = async (ctx) => {
 
   // Respond to user and finish
   return ctx.respondToClient(ctx, 200, {
-    response: {
-      status: 'valid',
-      code: discountCode.code,
-      discount: Number(discountCode.rate),
-      message: `Congratulation, you will get a discount of ${Math.floor(discountCode.rate*100)}% on the total price.`
-    }
+    status: 'valid',
+    code: discountCode.code,
+    discount: Number(discountCode.rate),
+    message: `Congratulation, you will get a discount of ${Math.floor(discountCode.rate*100)}% on the total price.`
   })
 
 }

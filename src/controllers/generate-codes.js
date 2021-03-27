@@ -13,9 +13,10 @@ const getItemsDB = require('../lib/db/get-items-db')
 
 module.exports = async (ctx) => {
 
+  // Collect params
   const params = {
-    brand: get(ctx, 'query.brand', null),
-    amount: get(ctx, 'query.amount', null)
+    brand: get(ctx, 'body.brand', null) !== null ? get(ctx, 'body.brand', null) : get(ctx, 'query.brand', null),
+    amount: get(ctx, 'body.amount', null) !== null ? get(ctx, 'body.amount', null) : get(ctx, 'query.amount', null)
   }
 
   // Param validation
