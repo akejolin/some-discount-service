@@ -109,6 +109,5 @@ module.exports = async (ctx) => {
   // Save codes
   await writeDB('db', 'codes.json', db)
  
-  console.log(ctx.respondToClient)
   return ctx.respondToClient(ctx, 200, db)
 }

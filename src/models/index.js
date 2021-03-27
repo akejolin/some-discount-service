@@ -12,5 +12,5 @@ module.exports = [
  { key: 'codes', value: codes, initData: false},
  { key: 'brands', value: brands, initData: true},
  { key: 'users', value: users, initData: true},
- { key: 'userCode', value: userCode, initData: false},
+ { key: 'user-code', value: userCode, initData: false},
 ]
