@@ -37,7 +37,7 @@ Generate discount codes
   {
     "id": 1,
     "code": "4b5d2f34678818fd57a377f4ed1c4bb8",
-    "brand": "blocket",
+    "brand": "some awesome brand",
     "brandId": 0,
     "desc": "20% off",
     "rate": 0.2,
