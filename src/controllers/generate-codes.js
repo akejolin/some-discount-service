@@ -15,17 +15,17 @@ module.exports = async (ctx) => {
 
   // Collect params
   const params = {
-    brand: get(ctx, 'body.brand', null) !== null ? get(ctx, 'body.brand', null) : get(ctx, 'query.brand', null),
+    brandId: get(ctx, 'body.brand_id', null) !== null ? get(ctx, 'body.brand_id', null) : get(ctx, 'query.brand_id', null),
     amount: get(ctx, 'body.amount', null) !== null ? get(ctx, 'body.amount', null) : get(ctx, 'query.amount', null)
   }
 
   // Param validation
-  if (params.brand === null) {
-    return ctx.respondToClient(ctx, 400 , `Brand param is missing`)
+  if (params.brandId === null) {
+    return ctx.respondToClient(ctx, 400 , `BrandId param is missing`)
   }
 
-  if (params.brand === '') {
-    return ctx.respondToClient(ctx, 400 , `Brand param was provided but with empty value`)
+  if (params.brandId === '') {
+    return ctx.respondToClient(ctx, 400 , `BrandId param was provided but with empty value`)
   }
 
   if (params.amount === null) {
@@ -41,7 +41,7 @@ module.exports = async (ctx) => {
   }
 
   // Get info about brand
-  let brand = await getItemDB('brands.json', 'slug', params.brand)
+  let brand = await getItemDB('brands.json', 'id', Number(params.brandId))
   
   // Exit if brand was not found
 
@@ -60,11 +60,11 @@ module.exports = async (ctx) => {
    * also lower new portion (if portion together with amount of active codes in db)
    * is greater than limit
    */
-   let inDB = await getItemsDB('codes.json', 'brand', 'blocket')
+
+  let inDB = await getItemsDB('codes.json', 'brandId', brand.id)
   inDB = inDB.filter(item => !item.isUsed)
   if (Number(inDB.length) >= Number(brand.maxActiveCodes)) {
-    ctx.respondToClient(ctx, 403, 'Maximum amount of codes is eceeded')
-    return
+    return ctx.respondToClient(ctx, 403, 'Maximum amount of codes is eceeded')
   } else {
     if ( Number(brand.maxActiveCodes) - Number(inDB.length) > 0 ) {
       if (Number(inDB.length) + portionToCreate > brand.maxActiveCodes) {
@@ -74,8 +74,7 @@ module.exports = async (ctx) => {
   }
 
   if (portionToCreate <= 0) {
-    ctx.respondToClient(ctx, 200, {error: 'Maximum amount of codes is eceeded', data: db})
-    return
+    return ctx.respondToClient(ctx, 200, {error: 'Maximum amount of codes is eceeded', data: db})
   }
 
   // Get list of codes from DB
@@ -87,11 +86,16 @@ module.exports = async (ctx) => {
   // Find out next id
   let nextId = db.length > 0 ? findLatestId(db) + 1 : 0
 
-  // Loop and generate new codes
+  const prepForRelationInsert = []
+
+  // create loop
 
   const run = Array.from(Array(portionToCreate).keys())
-  const promises = run.map(async () => {
+
+  // Loop and generate new codes
+  let promises = run.map(async () => {
     const code = await generateCode(nextId)
+    // Create and push item to db
     const output = {
       ...DBmodel,
       ...{
@@ -102,6 +106,8 @@ module.exports = async (ctx) => {
       }
     }
     db.push(output)
+    prepForRelationInsert.push(output.id)
+
     nextId++
   })
 
@@ -109,6 +115,33 @@ module.exports = async (ctx) => {
 
   // Save codes
   await writeDB('db', 'codes.json', db)
- 
+
+
+  // Create releation between brand and code
+
+  // Select all brand-code relations
+  let brandCodeRelDB = null
+  try {
+    brandCodeRelDB = await getItemsDB('brand-code.json', '*', '*')
+  } catch(error) {
+    console.error(error)
+  }
+
+  // Find out next id
+  nextId = brandCodeRelDB.length > 0 ? findLatestId(brandCodeRelDB) + 1 : 0
+  promises = prepForRelationInsert.map(async (item) => {
+    brandCodeRelDB.push({
+      id: Number(nextId),
+      codeId: Number(item),
+      brandId: Number(brand.id),
+    })
+    nextId++
+  })
+  await Promise.all(promises)
+
+  // Save codes
+  await writeDB('db', 'brand-code.json', brandCodeRelDB)
+
+  // Done
   return ctx.respondToClient(ctx, 200, db)
 }

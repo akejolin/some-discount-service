@@ -27,7 +27,7 @@ Generate discount codes
 
 | Name | Required |  Type   | Description |
 | -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `brand` | yes | string  | value needs to be a brand that exist in the db |
+| `brand_id` | yes | string  | id of brand |
 | `amount` | yes | number  | Amount of how many codes to be generated
 
 **Response**
