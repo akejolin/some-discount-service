@@ -9,6 +9,7 @@ const DBmodel = require('../models/codes')
 const writeDB = require('../lib/db/write-db')
 const getItemDB = require('../lib/db/get-item-db')
 const getItemsDB = require('../lib/db/get-items-db')
+const log = require('../utils/system.log')
 
 
 module.exports = async (ctx) => {
@@ -124,7 +125,7 @@ module.exports = async (ctx) => {
   try {
     brandCodeRelDB = await getItemsDB('brand-code.json', '*', '*')
   } catch(error) {
-    console.error(error)
+    log.error(error)
   }
 
   // Find out next id

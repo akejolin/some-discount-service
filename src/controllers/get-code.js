@@ -5,7 +5,6 @@
 */
 
 const get = require('lodash.get')
-const getItemDB = require('../lib/db/get-item-db')
 const getItemsDB = require('../lib/db/get-items-db')
 const writeDB = require('../lib/db/write-db')
 const findLatestId = require('../utils/find-latest-id')
@@ -54,7 +53,6 @@ module.exports = async (ctx) => {
     log.error(error)
   }
 
-  
   // Remove all used and claimed codes
   discountCodes = discountCodes.map(code => {
     const isClaimed = userCodeRelDB.find(rel => Number(rel.codeId) === Number(code.id))
