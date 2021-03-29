@@ -8,7 +8,6 @@ const get = require('lodash.get')
 const getItemDB = require('../lib/db/get-item-db')
 const getItemsDB = require('../lib/db/get-items-db')
 const writeDB = require('../lib/db/write-db')
-const findLatestId = require('../utils/find-latest-id')
 const log = require('../utils/system.log')
 
 module.exports = async (ctx) => {
