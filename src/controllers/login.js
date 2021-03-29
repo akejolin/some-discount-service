@@ -13,7 +13,7 @@ module.exports = async (ctx) => {
   // Collect params
   const params = {
     username: get(ctx, 'body.username', null) !== null ? get(ctx, 'body.username', null) : get(ctx, 'query.username', null),
-    password: get(ctx, 'body.password', null) !== null ? get(ctx, 'body.username', null) : get(ctx, 'query.username', null),
+    password: get(ctx, 'body.password', null) !== null ? get(ctx, 'body.password', null) : get(ctx, 'query.password', null),
   }
 
   // Param username validation

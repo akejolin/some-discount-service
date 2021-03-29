@@ -20,7 +20,7 @@ module.exports = (app) => async (ctx, next) => {
     return ctx.respondToClient(ctx, 403, `Token is missing: ${token}`)
   }
 
-  jwt.verify(token, config.secret, async (err, decoded) => {
+  return jwt.verify(token, config.secret, async (err, decoded) => {
     if (err) {
       return ctx.respondToClient(ctx, 401)
     }
