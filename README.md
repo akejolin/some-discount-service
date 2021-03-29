@@ -19,6 +19,17 @@ npm run lint // lint all code within js in ./src folder
 
 ## API endpoints
 
+### GET /login
+Login
+**Parameters**
+
+| Name | Required |  Type   | Description |
+| -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `username` | yes | string  | test username is: testy |
+| `password` | yes | number  | test password is: 12345
+
+Example: [http://localhost:8000/login?username=testy&password=12345](http://localhost:8000/login?username=testy&password=12345) 
+
 
 ### POST /generate-codes
 Generate discount codes
