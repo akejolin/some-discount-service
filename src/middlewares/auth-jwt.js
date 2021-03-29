@@ -15,12 +15,12 @@ module.exports = (app) => async (ctx, next) => {
     return await next()
   }
 
-  let token = ctx.token //||ctx.req.headers["Authorization"]
+  let token = ctx.token||ctx.req.headers["Authorization"]
   if (!token) {
     return ctx.respondToClient(ctx, 403, `Token is missing: ${token}`)
   }
 
-  jwt.verify(token, config.secret, async (err, decoded) => {
+  return jwt.verify(token, config.secret, async (err, decoded) => {
     if (err) {
       return ctx.respondToClient(ctx, 401)
     }
