@@ -15,17 +15,17 @@ module.exports = async (ctx) => {
 
   // Collect params
   const params = {
-    code: get(ctx, 'body.code', null) !== null ? get(ctx, 'query.code', null) : get(ctx, 'query.code', null),
+    brandId: get(ctx, 'body.brand_id', null) !== null ? get(ctx, 'query.brand_id', null) : get(ctx, 'query.brand_id', null),
     userId: get(ctx, 'body.user_id', null) !== null ? get(ctx, 'body.user_id', null) : get(ctx, 'query.user_id', null),
   }
 
   // Param code validation
-  if (params.code === null) {
-    return ctx.respondToClient(ctx, 400 , `code param is missing`)
+  if (params.brandId === null) {
+    return ctx.respondToClient(ctx, 400 , `brand_id param is missing`)
   }
 
-  if (params.code === '') {
-    return ctx.respondToClient(ctx, 400 , `code param was provided but with empty value`)
+  if (params.brandId === '') {
+    return ctx.respondToClient(ctx, 400 , `brand_id param was provided but with empty value`)
   }
 
   // Param userId validation
@@ -37,18 +37,6 @@ module.exports = async (ctx) => {
     return ctx.respondToClient(ctx, 400 , `user_id param was provided but with empty value`)
   }
 
-  // Select and match provided code in db
-  let discountCode = null
-  try {
-    discountCode = await getItemDB('codes.json', 'code', params.code)
-  } catch(error) {
-    log.error(error)
-  }
-
-  // Abort if not found
-  if (!discountCode) {
-    return ctx.respondToClient(ctx, 400, 'Provided code is invalid')
-  }
 
   // Select all user code relations
   let userCodeRelDB = null
@@ -58,24 +46,49 @@ module.exports = async (ctx) => {
     console.error(error)
   }
 
-  /* Check if code has already been used
-   * It is enough to only look for if discountCode.id exist in the relation db because
-   * Only one should be able to use one discount code
-   */
-  const codeHasExpired = userCodeRelDB.find(item => item.codeId === discountCode.id)
-
-  // If found then abort
-  if (codeHasExpired) {
-    return ctx.respondToClient(ctx, 403, 'Provided code is expired')
+  // Search for available codes
+  let discountCodes = []
+  try {
+    discountCodes = await getItemsDB('codes.json', 'brandId', Number(params.brandId))
+  } catch(error) {
+    log.error(error)
   }
 
-  // Find out next id
+  
+  // Remove all used and claimed codes
+  discountCodes = discountCodes.map(code => {
+    const isClaimed = userCodeRelDB.find(rel => Number(rel.codeId) === Number(code.id))
+    if (isClaimed) {
+      code.isClaimed = true
+    }
+    code.isClaimed = isClaimed ? true : false
+    return code
+  })
+
+  // Remove all unavailable codes
+  discountCodes = discountCodes.filter(dc => !dc.isClaimed && !dc.isUsed)
+
+  // Abort if not found
+  if (discountCodes.length < 1) {
+    return ctx.respondToClient(ctx, 400, 'No available codes')
+  }
+
+  // Select and claim first available code
+  const checkForFirstAvailable = discountCodes.find((dc) => !dc.isClaimed && !dc.isUsed)
+  let claimedCode = null
+  if (checkForFirstAvailable) {
+    claimedCode = checkForFirstAvailable
+  }
+
+  // ** Time to update DB **
+
+  // Find out next id for updating
   let nextId = userCodeRelDB.length > 0 ? findLatestId(userCodeRelDB) + 1 : 0
 
   // Create relation
   userCodeRelDB.push({
     id: nextId,
-    codeId: discountCode.id,
+    codeId: claimedCode.id,
     userId: Number(params.userId),
   })
 
@@ -85,9 +98,7 @@ module.exports = async (ctx) => {
   // Respond to user and finish
   return ctx.respondToClient(ctx, 200, {
     status: 'valid',
-    code: discountCode.code,
-    discount: Number(discountCode.rate),
-    message: `Congratulation, you will get a discount of ${Math.floor(discountCode.rate*100)}% on the total price.`
+    code: claimedCode.code,
+    message: `You have got a code to use for a discount on a purchase.`
   })
-
 }
