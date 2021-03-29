@@ -56,8 +56,8 @@ Generate discount codes
 
 | Name | Required |  Type   | Description |
 | -------------:|:--------:|:-------:| --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code` | yes | string  | the code to be used |
-| `userId` | yes | number  | The user who should be using the code
+| `brand_id` | yes | string  | The id of the brand, the code belongs to|
+| `user_id` | yes | number  | The user who should be using the code
 
 **Response**
 
@@ -72,4 +72,4 @@ Generate discount codes
 ```
 
 
-Example: [http://localhost:8000/get-code?code=919703cb272c9835ff7baeadec9beea9&user_id=0](http://localhost:8000/get-code?code=919703cb272c9835ff7baeadec9beea9&user_id=0)
+Example: [http://localhost:8000/get-code?brand_id=0&user_id=0](http://localhost:8000/get-code?brand_id=0&user_id=0)
