@@ -1,5 +1,5 @@
 /**
-* @desc get a discount code
+* @desc login and create token
 */
 
 const get = require('lodash.get')

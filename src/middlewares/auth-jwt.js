@@ -1,3 +1,9 @@
+/**
+* @desc Auth token verify
+* @param object $app - koa application
+* @return function - middleware
+*/
+
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.js");
 
