@@ -75,10 +75,8 @@ Generate discount codes
 ```json
 {
   "status": "valid",
-  "code": "919703cb272c9835ff7baeadec9beea9",
-  "discount": 0.2,
-  "message": "Congratulation, you will get a discount of 20% on the total price."
-
+  "code": "5d7b19bf96104c5ce0cffb56877c70e8",
+  "message": "You have got a code to use for a discount on a purchase."
 }
 ```
 
